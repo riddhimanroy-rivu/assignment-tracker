@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A modern student assignment tracker with deadlines and progress tracking.">
+    <title>Assignment Tracker</title>
+
+```
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+```
+
+</head>
+
+<body>
+
+```
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div>
+                <h2>TaskFlow</h2>
+                <span>Student Planner</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <button class="nav-item active" data-filter="all">
+                <span>📋</span>
+                All Assignments
+            </button>
+
+            <button class="nav-item" data-filter="pending">
+                <span>⏳</span>
+                Pending
+            </button>
+
+            <button class="nav-item" data-filter="completed">
+                <span>✅</span>
+                Completed
+            </button>
+
+            <button class="nav-item" data-filter="overdue">
+                <span>⚠️</span>
+                Overdue
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p>Stay organized.</p>
+            <p>Stay ahead. 🚀</p>
+        </div>
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!-- Header -->
+        <header class="topbar">
+            <div>
+                <p class="welcome">WELCOME BACK 👋</p>
+                <h1>Assignment Tracker</h1>
+                <p class="subtitle">
+                    Keep your assignments organized and never miss a deadline.
+                </p>
+            </div>
+
+            <button class="add-btn" id="openModalBtn">
+                <span>＋</span> Add Assignment
+            </button>
+        </header>
+
+
+        <!-- Statistics -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-icon blue">📚</div>
+                <div>
+                    <span>Total Assignments</span>
+                    <strong id="totalCount">0</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">⏳</div>
+                <div>
+                    <span>Pending</span>
+                    <strong id="pendingCount">0</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">✓</div>
+                <div>
+                    <span>Completed</span>
+                    <strong id="completedCount">0</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">!</div>
+                <div>
+                    <span>Overdue</span>
+                    <strong id="overdueCount">0</strong>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Progress -->
+        <section class="progress-section">
+            <div class="progress-header">
+                <div>
+                    <h3>Overall Progress</h3>
+                    <p>Keep completing assignments to reach your goal.</p>
+                </div>
+
+                <strong id="progressText">0%</strong>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progressFill"></div>
+            </div>
+        </section>
+
+
+        <!-- Controls -->
+        <section class="controls">
+
+            <div class="search-box">
+                <span>🔍</span>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search assignments..."
+                >
+            </div>
+
+            <select id="subjectFilter">
+                <option value="all">All Subjects</option>
+            </select>
+
+            <select id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="overdue">Overdue</option>
+            </select>
+
+        </section>
+
+
+        <!-- Assignment List -->
+        <section class="assignment-section">
+
+            <div class="section-title">
+                <div>
+                    <h2>Your Assignments</h2>
+                    <p id="assignmentSummary">0 assignments</p>
+                </div>
+            </div>
+
+            <div id="assignmentList" class="assignment-list"></div>
+
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">📚</div>
+                <h3>No assignments found</h3>
+                <p>Add your first assignment to start tracking your work.</p>
+                <button id="emptyAddBtn">＋ Add Assignment</button>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+
+<!-- Add Assignment Modal -->
+<div class="modal-overlay" id="modal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <div>
+                <h2>Add Assignment</h2>
+                <p>Enter the details of your assignment.</p>
+            </div>
+
+            <button class="close-btn" id="closeModalBtn">×</button>
+        </div>
+
+        <form id="assignmentForm">
+
+            <div class="form-group">
+                <label for="title">Assignment Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="e.g. Database Management Project"
+                    required
+                >
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input
+                        type="text"
+                        id="subject"
+                        placeholder="e.g. DBMS"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="deadline">Deadline</label>
+                    <input
+                        type="datetime-local"
+                        id="deadline"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    rows="4"
+                    placeholder="Add a short description..."
+                ></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" id="cancelBtn">
+                    Cancel
+                </button>
+
+                <button type="submit" class="save-btn">
+                    Add Assignment
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+```
+
+</body>
+</html>
